@@ -101,6 +101,55 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "delete multiple user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n[\r\n    {\r\n        \"id\": \"ab34dbde-4962-4d7b-ae39-b36c757233d9\"\r\n    },\r\n    {\r\n        \"id\": \"2202bde2-996a-4a87-aae1-559033cfe8bc\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/users/multiple-delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"multiple-delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/user/2202bde2-996a-4a87-aae1-559033cfe8bc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"2202bde2-996a-4a87-aae1-559033cfe8bc"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

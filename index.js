@@ -67,17 +67,16 @@ app.delete("/user/:id", (req, res) => {
 
 // Delete multiple user
 app.delete("/user/multiple-delete", (req, res) => {
-  var users = req.body;
-  for (var i = 0; i < users.length; i++) {
-    mysqlConnection.query(
-      "DELETE FROM user WHERE id = ?",
-      [users.id],
-      (err, rows, fields) => {
-        if (!err) res.send("Deleted successfully.");
-        else console.log(err);
-      }
-    );
-  }
+  var users = req.params;
+  console.log(users.length);
+  mysqlConnection.query(
+    "DELETE FROM user WHERE id IN ?",
+    [users.id],
+    (err, rows, fields) => {
+      if (!err) res.send("Deleted successfully.");
+      else console.log(err);
+    }
+  );
 });
 
 app.post("/users", (req, res) => {
@@ -103,17 +102,34 @@ app.post("/users", (req, res) => {
 });
 
 app.put("/users/:id", (req, res) => {
-  let user = req.body;
+  const {
+    firstName,
+    lastName,
+    address,
+    postCode,
+    phoneNumber,
+    email,
+    username,
+    password,
+  } = req.body;
+  const { id } = req.params;
 
-  let sql =
-    `UPDATE user SET firstName = "${user.firstName}", lastName = "${user.lastName}", address = "${user.address}",` +
-    `postCode = "${user.postCode}", phoneNumber = "${user.phoneNumber}", email = "${user.email}", ` +
-    `username = "${user.username}", password = "${user.password}" ` +
-    `WHERE id = "${req.params.id}"`;
+  const user = {
+    firstName,
+    lastName,
+    address,
+    postCode,
+    phoneNumber,
+    email,
+    username,
+    password,
+  };
 
-  mysqlConnection.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send("Updated User");
-  });
+  const result = mysqlConnection.query("UPDATE user SET ? WHERE id = ?", [
+    user,
+    id,
+  ]);
+  if (!result) res.send(result);
+  console.log(result);
+  res.send("Updated User");
 });
