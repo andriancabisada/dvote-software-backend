@@ -56,11 +56,19 @@ app.get("/users/:id", (req, res) => {
 // Delete a user
 app.delete("/user/:id", (req, res) => {
   mysqlConnection.query(
+    "SELECT * from user WHERE id = ?",
+    [req.params.id],
+    (err, rows, fields) => {
+      if (err) res.send("User doesn't exist");
+    }
+  );
+
+  mysqlConnection.query(
     "DELETE FROM user WHERE id = ?",
     [req.params.id],
     (err, rows, fields) => {
       if (!err) res.send("Deleted successfully.");
-      else console.log(err);
+      console.log(err);
     }
   );
 });
@@ -68,13 +76,13 @@ app.delete("/user/:id", (req, res) => {
 // Delete multiple user
 app.delete("/user/multiple-delete", (req, res) => {
   var users = req.params;
-  console.log(users.length);
+  console.log(users);
   mysqlConnection.query(
-    "DELETE FROM user WHERE id IN ?",
+    "DELETE FROM user WHERE id IN (?)",
     [users.id],
     (err, rows, fields) => {
       if (!err) res.send("Deleted successfully.");
-      else console.log(err);
+      console.log(err);
     }
   );
 });
